@@ -1,21 +1,38 @@
 <script setup>
+import { ref, onMounted } from 'vue'
+
+const latestVersion = ref('Loading...')
+
+onMounted(async () => {
+  try {
+    const response = await fetch('https://api.github.com/repos/theovilardo/PixelPlayer/releases/latest')
+    if (response.ok) {
+      const data = await response.json()
+      latestVersion.value = data.tag_name || data.name || 'Latest'
+    } else {
+      latestVersion.value = 'Latest'
+    }
+  } catch (error) {
+    latestVersion.value = 'Latest'
+  }
+})
 </script>
 
 <template>
-  <div class="relative min-h-screen flex items-center bg-base">
+  <div class="relative min-h-screen flex items-center bg-base" id="hero">
     <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center gap-12 lg:gap-20 py-20">
       <!-- Text Content -->
       <div class="text-center lg:text-left lg:w-1/2">
         <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green/10 text-green text-sm font-medium mb-6">
           <span class="w-2 h-2 rounded-full bg-green animate-pulse"></span>
-          v1.0 Available Now
+          {{ latestVersion }} Available
         </div>
         
         <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-text mb-4">
           PixelPlayer
         </h1>
         <p class="text-xl md:text-2xl text-subtext0 mb-4">
-          A local music player for Android, built with Material 3.
+          A beautiful local music player for Android, built with Material3 Expressive.
         </p>
         <p class="text-base text-subtext1 mb-8 max-w-lg mx-auto lg:mx-0">
           Open-source, ad-free, and designed to feel at home on your device. Features synced lyrics, equalizer, Chromecast support, and more.

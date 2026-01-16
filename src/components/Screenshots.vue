@@ -45,7 +45,7 @@ if (typeof window !== 'undefined') {
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center py-20 bg-base relative overflow-hidden" id="screenshots">
+  <div class="py-20 bg-base relative overflow-hidden" id="screenshots">
     <!-- Subtle background decorations -->
     <div class="absolute top-1/2 left-0 w-72 h-72 bg-pink/3 rounded-full blur-3xl -translate-y-1/2"></div>
     <div class="absolute top-1/2 right-0 w-72 h-72 bg-blue/3 rounded-full blur-3xl -translate-y-1/2"></div>
@@ -131,18 +131,18 @@ if (typeof window !== 'undefined') {
           <!-- Navigation buttons -->
           <button 
             @click="prevImage"
-            class="absolute left-4 md:left-8 p-4 rounded-full bg-surface0/80 backdrop-blur text-text hover:bg-surface1 transition-colors"
+            class="absolute left-2 md:left-8 p-3 md:p-4 rounded-full bg-surface0/80 backdrop-blur text-text hover:bg-surface1 transition-colors"
           >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
           </button>
 
           <button 
             @click="nextImage"
-            class="absolute right-4 md:right-8 p-4 rounded-full bg-surface0/80 backdrop-blur text-text hover:bg-surface1 transition-colors"
+            class="absolute right-2 md:right-8 p-3 md:p-4 rounded-full bg-surface0/80 backdrop-blur text-text hover:bg-surface1 transition-colors"
           >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
           </button>
@@ -172,8 +172,8 @@ if (typeof window !== 'undefined') {
             </div>
           </div>
 
-          <!-- Keyboard hint -->
-          <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 text-subtext0 text-sm opacity-50">
+          <!-- Keyboard hint - desktop only -->
+          <div class="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex items-center gap-4 text-subtext0 text-sm opacity-50">
             <span class="flex items-center gap-1">
               <kbd class="px-2 py-1 rounded bg-surface0 text-xs">←</kbd>
               <kbd class="px-2 py-1 rounded bg-surface0 text-xs">→</kbd>

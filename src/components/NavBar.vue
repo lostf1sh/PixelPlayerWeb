@@ -26,10 +26,10 @@ const scrollTo = (id) => {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
-        <div class="flex-shrink-0 flex items-center gap-3">
+        <button @click="scrollTo('hero')" class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
           <img class="h-10 w-10" src="@/assets/logo.png" alt="PixelPlayer Logo" />
           <span class="font-bold text-xl text-text tracking-wide">PixelPlayer</span>
-        </div>
+        </button>
         
         <!-- Desktop Menu -->
         <div class="hidden md:block">
