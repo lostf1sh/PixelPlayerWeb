@@ -115,61 +115,67 @@ if (typeof window !== 'undefined') {
       >
         <div 
           v-if="lightboxOpen" 
-          class="fixed inset-0 z-50 flex items-center justify-center bg-crust/95 backdrop-blur-lg"
+          class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-crust/95 backdrop-blur-lg p-4"
           @click.self="closeLightbox"
         >
           <!-- Close button -->
           <button 
             @click="closeLightbox"
-            class="absolute top-6 right-6 p-3 rounded-full bg-surface0/80 backdrop-blur text-text hover:bg-surface1 transition-colors z-10"
+            class="absolute top-4 right-4 p-2 rounded-full bg-surface0/80 backdrop-blur text-text hover:bg-surface1 transition-colors z-10"
           >
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
 
-          <!-- Navigation buttons -->
-          <button 
-            @click="prevImage"
-            class="absolute left-2 md:left-8 p-3 md:p-4 rounded-full bg-surface0/80 backdrop-blur text-text hover:bg-surface1 transition-colors"
-          >
-            <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
-          </button>
-
-          <button 
-            @click="nextImage"
-            class="absolute right-2 md:right-8 p-3 md:p-4 rounded-full bg-surface0/80 backdrop-blur text-text hover:bg-surface1 transition-colors"
-          >
-            <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </button>
-
-          <!-- Main image -->
-          <div class="relative max-w-xs md:max-w-sm">
-            <div class="rounded-3xl bg-surface0 p-3 shadow-2xl">
+          <!-- Main image container -->
+          <div class="relative w-48 sm:w-56 md:w-64 lg:w-72 max-h-[70vh]">
+            <div class="rounded-2xl bg-surface0 p-2 shadow-2xl">
               <img 
                 :src="screenshots[lightboxIndex].src" 
                 :alt="screenshots[lightboxIndex].alt" 
-                class="w-full h-auto rounded-2xl"
+                class="w-full h-auto rounded-xl"
               />
             </div>
+          </div>
+          
+          <!-- Image info & Navigation -->
+          <div class="mt-4 flex flex-col items-center gap-3">
+            <p class="text-text font-semibold">{{ screenshots[lightboxIndex].title }}</p>
             
-            <!-- Image info -->
-            <div class="text-center mt-6 space-y-1">
-              <p class="text-text font-semibold text-lg">{{ screenshots[lightboxIndex].title }}</p>
-              <div class="flex items-center justify-center gap-2">
+            <!-- Navigation -->
+            <div class="flex items-center gap-4">
+              <button 
+                @click="prevImage"
+                class="p-3 rounded-full bg-surface0 text-text hover:bg-surface1 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+              </button>
+              
+              <!-- Dots -->
+              <div class="flex items-center gap-2">
                 <span 
                   v-for="(_, i) in screenshots" 
                   :key="i" 
-                  class="w-1.5 h-1.5 rounded-full transition-all duration-300"
-                  :class="i === lightboxIndex ? 'bg-primary w-4' : 'bg-surface2'"
+                  @click="lightboxIndex = i"
+                  class="w-2 h-2 rounded-full transition-all duration-300 cursor-pointer"
+                  :class="i === lightboxIndex ? 'bg-primary w-4' : 'bg-surface2 hover:bg-surface1'"
                 ></span>
               </div>
-              <p class="text-subtext0 text-sm">{{ lightboxIndex + 1 }} / {{ screenshots.length }}</p>
+
+              <button 
+                @click="nextImage"
+                class="p-3 rounded-full bg-surface0 text-text hover:bg-surface1 transition-colors"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </button>
             </div>
+            
+            <p class="text-subtext0 text-sm">{{ lightboxIndex + 1 }} / {{ screenshots.length }}</p>
           </div>
 
           <!-- Keyboard hint - desktop only -->
