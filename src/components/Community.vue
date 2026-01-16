@@ -1,5 +1,5 @@
 <template>
-  <div class="py-16 bg-base" id="community">
+  <div class="min-h-screen flex items-center py-20 bg-base" id="community">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-10">
         <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Community</h2>

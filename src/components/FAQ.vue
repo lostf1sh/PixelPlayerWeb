@@ -35,7 +35,7 @@ const toggleFaq = (index) => {
 </script>
 
 <template>
-  <div class="py-20 bg-mantle relative overflow-hidden" id="faq">
+  <div class="min-h-screen flex items-center py-20 bg-mantle relative overflow-hidden" id="faq">
     <!-- Background decorations -->
     <div class="absolute top-0 right-1/4 w-72 h-72 bg-lavender/5 rounded-full blur-3xl"></div>
     <div class="absolute bottom-0 left-1/4 w-72 h-72 bg-mauve/5 rounded-full blur-3xl"></div>

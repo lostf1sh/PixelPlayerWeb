@@ -11,6 +11,14 @@ const openDownloadModal = () => {
 const closeDownloadModal = () => {
   showDownloadModal.value = false
 }
+
+const scrollTo = (id) => {
+  const element = document.getElementById(id)
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' })
+  }
+  isOpen.value = false
+}
 </script>
 
 <template>
@@ -26,8 +34,10 @@ const closeDownloadModal = () => {
         <!-- Desktop Menu -->
         <div class="hidden md:block">
           <div class="ml-10 flex items-baseline space-x-4">
-            <a href="#features" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Features</a>
-            <a href="#screenshots" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Screenshots</a>
+            <button @click="scrollTo('features')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Features</button>
+            <button @click="scrollTo('screenshots')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Screenshots</button>
+            <button @click="scrollTo('faq')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">FAQ</button>
+            <button @click="scrollTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Community</button>
             <button 
               @click="openDownloadModal"
               class="bg-primary text-base font-bold px-4 py-2 rounded-full hover:bg-primary/90 transition-transform hover:scale-105 active:scale-95"
@@ -55,8 +65,10 @@ const closeDownloadModal = () => {
     <!-- Mobile Menu -->
     <div v-show="isOpen" class="md:hidden" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-base border-b border-surface0/50">
-        <a href="#features" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium">Features</a>
-        <a href="#screenshots" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium">Screenshots</a>
+        <button @click="scrollTo('features')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Features</button>
+        <button @click="scrollTo('screenshots')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Screenshots</button>
+        <button @click="scrollTo('faq')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">FAQ</button>
+        <button @click="scrollTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Community</button>
         <button @click="openDownloadModal" class="text-primary hover:bg-surface0 block px-3 py-2 rounded-md text-base font-bold w-full text-left">Get App</button>
       </div>
     </div>

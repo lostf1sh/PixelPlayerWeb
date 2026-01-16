@@ -52,7 +52,7 @@ const features = [
 </script>
 
 <template>
-  <div class="py-20 bg-mantle" id="features">
+  <div class="min-h-screen flex items-center py-20 bg-mantle" id="features">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section Header -->
       <div class="text-center mb-12">

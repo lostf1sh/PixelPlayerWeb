@@ -45,7 +45,7 @@ if (typeof window !== 'undefined') {
 </script>
 
 <template>
-  <div class="py-20 bg-mantle relative overflow-hidden" id="screenshots">
+  <div class="min-h-screen flex items-center py-20 bg-base relative overflow-hidden" id="screenshots">
     <!-- Subtle background decorations -->
     <div class="absolute top-1/2 left-0 w-72 h-72 bg-pink/3 rounded-full blur-3xl -translate-y-1/2"></div>
     <div class="absolute top-1/2 right-0 w-72 h-72 bg-blue/3 rounded-full blur-3xl -translate-y-1/2"></div>
