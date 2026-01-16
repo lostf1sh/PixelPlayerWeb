@@ -2,8 +2,6 @@
 
 Landing page for [PixelPlayer](https://github.com/theovilardo/PixelPlayer) - A Material 3 music player for Android.
 
-![PixelPlayer](src/assets/logo.png)
-
 ## 🚀 Live Demo
 
 Visit the live site: [pixelplayer.vercel.app](https://pixelplayer.vercel.app) *(or your deployed URL)*
