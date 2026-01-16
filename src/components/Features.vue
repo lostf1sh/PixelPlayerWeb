@@ -1,75 +1,158 @@
 <script setup>
+const features = [
+  {
+    icon: 'palette',
+    title: 'Material You',
+    description: 'Dynamic colors that adapt to your wallpaper.',
+    color: 'blue'
+  },
+  {
+    icon: 'play',
+    title: 'ExoPlayer',
+    description: 'Gapless playback with FFmpeg support.',
+    color: 'green'
+  },
+  {
+    icon: 'music',
+    title: 'Synced Lyrics',
+    description: 'LRC lyrics via LRCLIB, synced to playback.',
+    color: 'pink'
+  },
+  {
+    icon: 'sliders',
+    title: 'Equalizer',
+    description: '10-band equalizer with presets.',
+    color: 'mauve'
+  },
+  {
+    icon: 'list',
+    title: 'Playlists',
+    description: 'Create playlists or import M3U files.',
+    color: 'peach'
+  },
+  {
+    icon: 'edit',
+    title: 'Tag Editor',
+    description: 'Edit MP3, FLAC, M4A metadata.',
+    color: 'teal'
+  },
+  {
+    icon: 'cast',
+    title: 'Chromecast',
+    description: 'Cast to TV and smart speakers.',
+    color: 'sky'
+  },
+  {
+    icon: 'folder',
+    title: 'Multi-format',
+    description: 'MP3, FLAC, AAC, OGG, WAV support.',
+    color: 'yellow'
+  }
+]
 </script>
 
 <template>
-  <div class="py-16 bg-base" id="features">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-10">
-        <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Features</h2>
-        <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-text sm:text-4xl">
-          Everything you need in a modern player
+  <div class="py-20 bg-mantle" id="features">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section Header -->
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold text-text mb-3">
+          Features
+        </h2>
+        <p class="text-lg text-subtext0">
+          Everything you'd expect from a modern music player.
         </p>
       </div>
 
-      <div class="flex flex-col gap-12">
-        <!-- Feature 1: Material Design -->
-        <div class="flex flex-col lg:flex-row items-center gap-8">
-          <div class="lg:w-1/2 flex justify-center">
-             <div class="relative w-48 md:w-56 rounded-3xl bg-surface0 p-3 shadow-xl rotate-1 hover:rotate-0 transition-transform duration-300">
-               <img src="@/assets/screenshots/home.jpg" alt="Material Design" class="rounded-2xl w-full h-auto" />
-             </div>
+      <!-- Feature Cards Grid with Gradients -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+        <!-- Material You -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-blue/10 to-lavender/5 border border-surface1">
+          <div class="w-10 h-10 rounded-xl bg-blue/20 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+            </svg>
           </div>
-          <div class="lg:w-1/2">
-            <div class="flex items-center gap-4 mb-4">
-              <div class="p-3 rounded-2xl bg-blue/10 text-blue">
-                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
-              </div>
-              <h3 class="text-2xl font-bold text-text">Material 3 Expressive</h3>
-            </div>
-            <p class="text-lg text-subtext0">
-              Built with the latest Material 3 guidelines. Enjoy dynamic colors that adapt to your media, fluid animations, and a UI that feels right at home on Android.
-            </p>
-          </div>
+          <h3 class="font-semibold text-text mb-1">Material You</h3>
+          <p class="text-sm text-subtext0">Dynamic colors that adapt to your wallpaper.</p>
         </div>
 
-        <!-- Feature 2: Synced Lyrics (Reverse Layout) -->
-        <div class="flex flex-col lg:flex-row-reverse items-center gap-8">
-          <div class="lg:w-1/2 flex justify-center">
-             <div class="relative w-48 md:w-56 rounded-3xl bg-surface0 p-3 shadow-xl -rotate-1 hover:rotate-0 transition-transform duration-300">
-               <img src="@/assets/screenshots/lyrics.jpg" alt="Synced Lyrics" class="rounded-2xl w-full h-auto" />
-             </div>
+        <!-- ExoPlayer -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-green/10 to-teal/5 border border-surface1">
+          <div class="w-10 h-10 rounded-xl bg-green/20 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
           </div>
-          <div class="lg:w-1/2">
-            <div class="flex items-center gap-4 mb-4">
-              <div class="p-3 rounded-2xl bg-pink/10 text-pink">
-                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
-              </div>
-              <h3 class="text-2xl font-bold text-text">Synced Lyrics</h3>
-            </div>
-            <p class="text-lg text-subtext0">
-              Sing along with synchronized lyrics. PixelPlayer automatically fetches lyrics for your songs, displaying them in a beautiful, time-synced interface.
-            </p>
-          </div>
+          <h3 class="font-semibold text-text mb-1">ExoPlayer</h3>
+          <p class="text-sm text-subtext0">Gapless playback with FFmpeg support.</p>
         </div>
 
-        <!-- Feature 3: Smart Library -->
-        <div class="flex flex-col lg:flex-row items-center gap-8">
-           <div class="lg:w-1/2 flex justify-center">
-             <div class="relative w-48 md:w-56 rounded-3xl bg-surface0 p-3 shadow-xl rotate-1 hover:rotate-0 transition-transform duration-300">
-               <img src="@/assets/screenshots/library.jpg" alt="Smart Library" class="rounded-2xl w-full h-auto" />
-             </div>
+        <!-- Synced Lyrics -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-pink/10 to-mauve/5 border border-surface1">
+          <div class="w-10 h-10 rounded-xl bg-pink/20 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+            </svg>
           </div>
-          <div class="lg:w-1/2">
-            <div class="flex items-center gap-4 mb-4">
-               <div class="p-3 rounded-2xl bg-green/10 text-green">
-                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-               </div>
-              <h3 class="text-2xl font-bold text-text">Smart Library</h3>
-            </div>
-            <p class="text-lg text-subtext0">
-              Organize your local music collection effortlessly. Filter by artist, album, or create custom playlists. Fast, offline, and private.
-            </p>
+          <h3 class="font-semibold text-text mb-1">Synced Lyrics</h3>
+          <p class="text-sm text-subtext0">LRC lyrics via LRCLIB, synced to playback.</p>
+        </div>
+
+        <!-- Equalizer -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-mauve/10 to-pink/5 border border-surface1">
+          <div class="w-10 h-10 rounded-xl bg-mauve/20 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-mauve" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+            </svg>
           </div>
+          <h3 class="font-semibold text-text mb-1">Equalizer</h3>
+          <p class="text-sm text-subtext0">10-band equalizer with presets.</p>
+        </div>
+
+        <!-- Playlists -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-peach/10 to-yellow/5 border border-surface1">
+          <div class="w-10 h-10 rounded-xl bg-peach/20 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-peach" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">Playlists</h3>
+          <p class="text-sm text-subtext0">Create playlists or import M3U files.</p>
+        </div>
+
+        <!-- Tag Editor -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-teal/10 to-green/5 border border-surface1">
+          <div class="w-10 h-10 rounded-xl bg-teal/20 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">Tag Editor</h3>
+          <p class="text-sm text-subtext0">Edit MP3, FLAC, M4A metadata.</p>
+        </div>
+
+        <!-- Chromecast -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-sky/10 to-blue/5 border border-surface1">
+          <div class="w-10 h-10 rounded-xl bg-sky/20 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-sky" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"></path>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">Chromecast</h3>
+          <p class="text-sm text-subtext0">Cast to TV and smart speakers.</p>
+        </div>
+
+        <!-- Multi-format -->
+        <div class="p-5 rounded-2xl bg-gradient-to-br from-yellow/10 to-peach/5 border border-surface1">
+          <div class="w-10 h-10 rounded-xl bg-yellow/20 flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+            </svg>
+          </div>
+          <h3 class="font-semibold text-text mb-1">Multi-format</h3>
+          <p class="text-sm text-subtext0">MP3, FLAC, AAC, OGG, WAV support.</p>
         </div>
       </div>
     </div>

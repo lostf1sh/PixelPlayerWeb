@@ -2,6 +2,7 @@
 import NavBar from './components/NavBar.vue'
 import Hero from './components/Hero.vue'
 import Features from './components/Features.vue'
+import Screenshots from './components/Screenshots.vue'
 import FAQ from './components/FAQ.vue'
 import Community from './components/Community.vue'
 import Footer from './components/Footer.vue'
@@ -13,6 +14,7 @@ import Footer from './components/Footer.vue'
     <main>
       <Hero />
       <Features />
+      <Screenshots />
       <FAQ />
       <Community />
     </main>
