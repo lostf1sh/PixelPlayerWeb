@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { fetchWithCache } from '../utils/cache'
 
 const stats = ref({
   stars: 0,
@@ -51,34 +52,25 @@ const formatNumber = (num) => {
 
 onMounted(async () => {
   try {
-    // Fetch repo data
-    const [repoResponse, releasesResponse, contributorsResponse] = await Promise.all([
-      fetch('https://api.github.com/repos/theovilardo/PixelPlayer'),
-      fetch('https://api.github.com/repos/theovilardo/PixelPlayer/releases'),
-      fetch('https://api.github.com/repos/theovilardo/PixelPlayer/contributors?per_page=100')
+    // Fetch with cache (5 min TTL)
+    const [repoData, releases, contributors] = await Promise.all([
+      fetchWithCache('https://api.github.com/repos/theovilardo/PixelPlayer', 'repo'),
+      fetchWithCache('https://api.github.com/repos/theovilardo/PixelPlayer/releases', 'releases'),
+      fetchWithCache('https://api.github.com/repos/theovilardo/PixelPlayer/contributors?per_page=100', 'contributors')
     ])
 
-    if (repoResponse.ok) {
-      const repoData = await repoResponse.json()
-      stats.value.stars = repoData.stargazers_count || 0
-      stats.value.forks = repoData.forks_count || 0
-    }
+    stats.value.stars = repoData.stargazers_count || 0
+    stats.value.forks = repoData.forks_count || 0
 
-    if (releasesResponse.ok) {
-      const releases = await releasesResponse.json()
-      let totalDownloads = 0
-      releases.forEach(release => {
-        release.assets?.forEach(asset => {
-          totalDownloads += asset.download_count || 0
-        })
+    let totalDownloads = 0
+    releases.forEach(release => {
+      release.assets?.forEach(asset => {
+        totalDownloads += asset.download_count || 0
       })
-      stats.value.downloads = totalDownloads
-    }
+    })
+    stats.value.downloads = totalDownloads
 
-    if (contributorsResponse.ok) {
-      const contributors = await contributorsResponse.json()
-      stats.value.contributors = Array.isArray(contributors) ? contributors.length : 0
-    }
+    stats.value.contributors = Array.isArray(contributors) ? contributors.length : 0
 
     isLoading.value = false
 

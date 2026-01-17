@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
+const router = useRouter()
+const route = useRoute()
 const isOpen = ref(false)
 const showDownloadModal = ref(false)
 
@@ -12,12 +15,36 @@ const closeDownloadModal = () => {
   showDownloadModal.value = false
 }
 
-const scrollTo = (id) => {
-  const element = document.getElementById(id)
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth' })
-  }
+const goHome = () => {
   isOpen.value = false
+  if (route.path !== '/') {
+    router.push('/')
+  } else {
+    const element = document.getElementById('hero')
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+}
+
+const navigateTo = (sectionId) => {
+  isOpen.value = false
+  if (route.path !== '/') {
+    // Navigate to home first, then scroll
+    router.push('/').then(() => {
+      setTimeout(() => {
+        const element = document.getElementById(sectionId)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 100)
+    })
+  } else {
+    const element = document.getElementById(sectionId)
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 }
 </script>
 
@@ -26,7 +53,7 @@ const scrollTo = (id) => {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
-        <button @click="scrollTo('hero')" class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
+        <button @click="goHome" class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
           <img class="h-10 w-10" src="@/assets/logo.png" alt="PixelPlayer Logo" />
           <span class="font-bold text-xl text-text tracking-wide">PixelPlayer</span>
         </button>
@@ -34,11 +61,11 @@ const scrollTo = (id) => {
         <!-- Desktop Menu -->
         <div class="hidden md:block">
           <div class="ml-10 flex items-baseline space-x-4">
-            <button @click="scrollTo('features')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Features</button>
-            <button @click="scrollTo('screenshots')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Screenshots</button>
-            <button @click="scrollTo('faq')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">FAQ</button>
-            <button @click="scrollTo('changelog')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Changelog</button>
-            <button @click="scrollTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Community</button>
+            <button @click="navigateTo('features')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Features</button>
+            <button @click="navigateTo('screenshots')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Screenshots</button>
+            <button @click="navigateTo('faq')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">FAQ</button>
+            <router-link to="/changelog" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Changelog</router-link>
+            <button @click="navigateTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Community</button>
             <button 
               @click="openDownloadModal"
               class="bg-primary text-base font-bold px-4 py-2 rounded-full hover:bg-primary/90 transition-transform hover:scale-105 active:scale-95"
@@ -66,11 +93,11 @@ const scrollTo = (id) => {
     <!-- Mobile Menu -->
     <div v-show="isOpen" class="md:hidden" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-base border-b border-surface0/50">
-        <button @click="scrollTo('features')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Features</button>
-        <button @click="scrollTo('screenshots')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Screenshots</button>
-        <button @click="scrollTo('faq')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">FAQ</button>
-        <button @click="scrollTo('changelog')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Changelog</button>
-        <button @click="scrollTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Community</button>
+        <button @click="navigateTo('features')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Features</button>
+        <button @click="navigateTo('screenshots')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Screenshots</button>
+        <button @click="navigateTo('faq')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">FAQ</button>
+        <router-link to="/changelog" @click="isOpen = false" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Changelog</router-link>
+        <button @click="navigateTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Community</button>
         <button @click="openDownloadModal" class="text-primary hover:bg-surface0 block px-3 py-2 rounded-md text-base font-bold w-full text-left">Get App</button>
       </div>
     </div>
