@@ -37,6 +37,7 @@ const scrollTo = (id) => {
             <button @click="scrollTo('features')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Features</button>
             <button @click="scrollTo('screenshots')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Screenshots</button>
             <button @click="scrollTo('faq')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">FAQ</button>
+            <button @click="scrollTo('changelog')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Changelog</button>
             <button @click="scrollTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Community</button>
             <button 
               @click="openDownloadModal"
@@ -68,6 +69,7 @@ const scrollTo = (id) => {
         <button @click="scrollTo('features')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Features</button>
         <button @click="scrollTo('screenshots')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Screenshots</button>
         <button @click="scrollTo('faq')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">FAQ</button>
+        <button @click="scrollTo('changelog')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Changelog</button>
         <button @click="scrollTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Community</button>
         <button @click="openDownloadModal" class="text-primary hover:bg-surface0 block px-3 py-2 rounded-md text-base font-bold w-full text-left">Get App</button>
       </div>
