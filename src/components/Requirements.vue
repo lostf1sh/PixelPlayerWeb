@@ -21,7 +21,7 @@ const requirements = [
   {
     icon: 'storage',
     title: 'Storage',
-    value: '~30 MB',
+    value: '~50 MB',
     description: 'App size',
     color: 'peach',
     bgClass: 'bg-peach/20',
