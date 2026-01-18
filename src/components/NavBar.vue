@@ -1,11 +1,13 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useTheme } from '../composables/useTheme'
 
 const router = useRouter()
 const route = useRoute()
 const isOpen = ref(false)
 const showDownloadModal = ref(false)
+const { isDark, toggleTheme } = useTheme()
 
 const openDownloadModal = () => {
   showDownloadModal.value = true
@@ -67,8 +69,20 @@ const navigateTo = (sectionId) => {
             <router-link to="/changelog" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Changelog</router-link>
             <button @click="navigateTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Community</button>
             <button 
+              @click="toggleTheme"
+              class="p-2 rounded-lg hover:bg-surface0 transition-colors text-subtext0 hover:text-text"
+              :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+            >
+              <svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+              </svg>
+              <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+              </svg>
+            </button>
+            <button 
               @click="openDownloadModal"
-              class="bg-primary text-base font-bold px-4 py-2 rounded-full hover:bg-primary/90 transition-transform hover:scale-105 active:scale-95"
+              class="bg-primary text-crust font-bold px-4 py-2 rounded-full hover:bg-primary/90 transition-transform hover:scale-105 active:scale-95"
             >
               Get App
             </button>
@@ -98,6 +112,15 @@ const navigateTo = (sectionId) => {
         <button @click="navigateTo('faq')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">FAQ</button>
         <router-link to="/changelog" @click="isOpen = false" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Changelog</router-link>
         <button @click="navigateTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Community</button>
+        <button @click="toggleTheme" class="text-subtext0 hover:text-text hover:bg-surface0 flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium w-full text-left">
+          <svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+          </svg>
+          {{ isDark ? 'Light Mode' : 'Dark Mode' }}
+        </button>
         <button @click="openDownloadModal" class="text-primary hover:bg-surface0 block px-3 py-2 rounded-md text-base font-bold w-full text-left">Get App</button>
       </div>
     </div>
