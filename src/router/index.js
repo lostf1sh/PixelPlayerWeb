@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../pages/Home.vue'
 import ChangelogPage from '../pages/ChangelogPage.vue'
+import About from '../pages/About.vue'
+import NotFound from '../pages/NotFound.vue'
 
 const routes = [
   {
@@ -12,6 +14,16 @@ const routes = [
     path: '/changelog',
     name: 'Changelog',
     component: ChangelogPage
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: About
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound
   }
 ]
 

@@ -16,7 +16,7 @@ import Footer from '../components/Footer.vue'
 <template>
   <div class="min-h-screen bg-base text-text selection:bg-primary selection:text-base scroll-smooth">
     <NavBar />
-    <main>
+    <main id="main">
       <Hero />
       <GitHubStats />
       <Features />

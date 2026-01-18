@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { parseMarkdown } from '../utils/markdown'
 
 const releases = ref([])
 const isLoading = ref(true)
@@ -26,28 +27,6 @@ const getRelativeTime = (dateString) => {
   if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`
   if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`
   return `${Math.floor(diffDays / 365)} years ago`
-}
-
-const parseMarkdown = (text) => {
-  if (!text) return ''
-  
-  // Simple markdown parsing
-  return text
-    // Headers
-    .replace(/^### (.*$)/gim, '<h4 class="text-base font-semibold text-text mt-3 mb-1">$1</h4>')
-    .replace(/^## (.*$)/gim, '<h3 class="text-lg font-semibold text-text mt-4 mb-2">$1</h3>')
-    // Bold
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-text">$1</strong>')
-    // Italic
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    // Code
-    .replace(/`(.*?)`/g, '<code class="px-1.5 py-0.5 bg-surface1 rounded text-sm text-primary">$1</code>')
-    // Lists
-    .replace(/^\* (.*$)/gim, '<li class="ml-4 text-subtext0">• $1</li>')
-    .replace(/^- (.*$)/gim, '<li class="ml-4 text-subtext0">• $1</li>')
-    // Line breaks
-    .replace(/\n\n/g, '</p><p class="mt-2">')
-    .replace(/\n/g, '<br>')
 }
 
 const toggleExpand = (index) => {

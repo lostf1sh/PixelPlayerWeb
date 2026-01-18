@@ -67,6 +67,7 @@ const navigateTo = (sectionId) => {
             <button @click="navigateTo('screenshots')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Screenshots</button>
             <button @click="navigateTo('faq')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">FAQ</button>
             <router-link to="/changelog" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Changelog</router-link>
+            <router-link to="/about" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</router-link>
             <button @click="navigateTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 px-3 py-2 rounded-md text-sm font-medium transition-colors">Community</button>
             <button 
               @click="toggleTheme"
@@ -111,6 +112,7 @@ const navigateTo = (sectionId) => {
         <button @click="navigateTo('screenshots')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Screenshots</button>
         <button @click="navigateTo('faq')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">FAQ</button>
         <router-link to="/changelog" @click="isOpen = false" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Changelog</router-link>
+        <router-link to="/about" @click="isOpen = false" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">About</router-link>
         <button @click="navigateTo('community')" class="text-subtext0 hover:text-text hover:bg-surface0 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Community</button>
         <button @click="toggleTheme" class="text-subtext0 hover:text-text hover:bg-surface0 flex items-center gap-2 px-3 py-2 rounded-md text-base font-medium w-full text-left">
           <svg v-if="isDark" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

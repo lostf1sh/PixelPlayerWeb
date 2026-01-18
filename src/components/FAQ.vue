@@ -58,30 +58,33 @@ const toggleFaq = (index) => {
       </div>
 
       <div class="space-y-5">
-        <div 
-          v-for="(faq, index) in faqs" 
-          :key="index" 
+        <div
+          v-for="(faq, index) in faqs"
+          :key="index"
           class="group bg-surface0 rounded-3xl overflow-hidden transition-all duration-500 ease-out"
-          :class="{ 
+          :class="{
             'ring-2 ring-primary/50 shadow-lg shadow-primary/10': faq.open,
-            'hover:bg-surface0/80': !faq.open 
+            'hover:bg-surface0/80': !faq.open
           }"
         >
-          <button 
-            @click="toggleFaq(index)" 
+          <button
+            @click="toggleFaq(index)"
             class="w-full px-8 py-6 text-left flex items-center justify-between gap-4 transition-colors duration-300"
+            :aria-expanded="faq.open"
+            :aria-controls="`faq-answer-${index}`"
+            :id="`faq-question-${index}`"
           >
             <div class="flex items-center gap-5">
               <!-- Animated indicator -->
-              <div 
+              <div
                 class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-500"
                 :class="faq.open ? 'bg-primary/20 text-primary rotate-0' : 'bg-surface1 text-subtext0 group-hover:bg-surface2'"
               >
-                <svg 
-                  class="w-5 h-5 transition-transform duration-500" 
+                <svg
+                  class="w-5 h-5 transition-transform duration-500"
                   :class="{ 'rotate-45': faq.open }"
-                  fill="none" 
-                  stroke="currentColor" 
+                  fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -89,17 +92,17 @@ const toggleFaq = (index) => {
               </div>
               <span class="font-semibold text-text text-xl">{{ faq.question }}</span>
             </div>
-            <svg 
-              class="w-5 h-5 text-subtext0 transition-all duration-500 flex-shrink-0" 
+            <svg
+              class="w-5 h-5 text-subtext0 transition-all duration-500 flex-shrink-0"
               :class="{ 'rotate-180 text-primary': faq.open }"
-              fill="none" 
-              stroke="currentColor" 
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
-          
+
           <!-- Animated answer container -->
           <Transition
             enter-active-class="transition-all duration-500 ease-out"
@@ -109,7 +112,7 @@ const toggleFaq = (index) => {
             leave-from-class="max-h-48 opacity-100"
             leave-to-class="max-h-0 opacity-0"
           >
-            <div v-if="faq.open" class="overflow-hidden">
+            <div v-if="faq.open" :id="`faq-answer-${index}`" class="overflow-hidden" :aria-labelledby="`faq-question-${index}`">
               <div class="px-8 pb-6">
                 <div class="pl-[3.75rem] border-l-2 border-primary/30">
                   <p class="text-subtext0 text-lg leading-relaxed animate-fade-in-up">{{ faq.answer }}</p>

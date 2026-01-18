@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const screenshots = [
   { src: new URL('@/assets/screenshots/home.jpg', import.meta.url).href, alt: 'Home Screen', title: 'Home' },
@@ -39,9 +39,13 @@ const handleKeydown = (e) => {
   if (e.key === 'ArrowLeft') prevImage()
 }
 
-if (typeof window !== 'undefined') {
+onMounted(() => {
   window.addEventListener('keydown', handleKeydown)
-}
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 </script>
 
 <template>
