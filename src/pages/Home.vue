@@ -5,7 +5,6 @@ import GitHubStats from '../components/GitHubStats.vue'
 import Features from '../components/Features.vue'
 import Screenshots from '../components/Screenshots.vue'
 import LatestRelease from '../components/LatestRelease.vue'
-import Testimonials from '../components/Testimonials.vue'
 import FAQ from '../components/FAQ.vue'
 import Requirements from '../components/Requirements.vue'
 import Community from '../components/Community.vue'
@@ -22,7 +21,6 @@ import Footer from '../components/Footer.vue'
       <Features />
       <Screenshots />
       <LatestRelease />
-      <Testimonials />
       <FAQ />
       <Requirements />
       <Community />
