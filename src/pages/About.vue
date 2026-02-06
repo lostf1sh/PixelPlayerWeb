@@ -112,6 +112,7 @@ import Footer from '../components/Footer.vue'
           <a
             href="https://github.com/theovilardo/PixelPlayer"
             target="_blank"
+            rel="noopener noreferrer"
             class="inline-flex items-center gap-2 px-6 py-3 bg-surface0 text-text font-medium rounded-full hover:bg-surface1 transition-colors"
           >
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

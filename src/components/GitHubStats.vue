@@ -89,12 +89,6 @@ onMounted(async () => {
   }
 })
 
-const statItems = [
-  { key: 'stars', label: 'Stars', icon: 'star', color: 'yellow' },
-  { key: 'forks', label: 'Forks', color: 'blue', icon: 'fork' },
-  { key: 'downloads', label: 'Downloads', color: 'green', icon: 'download' },
-  { key: 'contributors', label: 'Contributors', color: 'pink', icon: 'users' }
-]
 </script>
 
 <template>

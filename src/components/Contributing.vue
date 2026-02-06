@@ -98,6 +98,7 @@ const contributionTypes = [
             <a 
               href="https://github.com/theovilardo/PixelPlayer/fork" 
               target="_blank"
+              rel="noopener noreferrer"
               class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-crust font-semibold rounded-xl hover:bg-primary/90 transition-colors"
             >
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -108,6 +109,7 @@ const contributionTypes = [
             <a 
               href="https://github.com/theovilardo/PixelPlayer/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22" 
               target="_blank"
+              rel="noopener noreferrer"
               class="inline-flex items-center gap-2 px-5 py-2.5 bg-surface1 text-text font-semibold rounded-xl hover:bg-surface2 transition-colors"
             >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

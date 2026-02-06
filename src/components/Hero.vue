@@ -1,17 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { fetchWithCache } from '../utils/cache'
 
 const latestVersion = ref('Loading...')
 
 onMounted(async () => {
   try {
-    const response = await fetch('https://api.github.com/repos/theovilardo/PixelPlayer/releases/latest')
-    if (response.ok) {
-      const data = await response.json()
-      latestVersion.value = data.tag_name || data.name || 'Latest'
-    } else {
-      latestVersion.value = 'Latest'
-    }
+    const data = await fetchWithCache(
+      'https://api.github.com/repos/theovilardo/PixelPlayer/releases/latest',
+      'latest_release'
+    )
+    latestVersion.value = data.tag_name || data.name || 'Latest'
   } catch (error) {
     latestVersion.value = 'Latest'
   }
@@ -42,6 +41,7 @@ onMounted(async () => {
           <a 
             href="https://github.com/theovilardo/PixelPlayer/releases" 
             target="_blank" 
+            rel="noopener noreferrer"
             class="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-semibold rounded-xl text-crust bg-primary hover:bg-lavender transition-colors"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -52,6 +52,7 @@ onMounted(async () => {
           <a 
             href="https://github.com/theovilardo/PixelPlayer" 
             target="_blank" 
+            rel="noopener noreferrer"
             class="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-medium rounded-xl text-text bg-surface0 hover:bg-surface1 border border-surface1 transition-colors"
           >
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">

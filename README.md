@@ -4,7 +4,7 @@ Landing page for [PixelPlayer](https://github.com/theovilardo/PixelPlayer) - A M
 
 ## 🚀 Live Demo
 
-Visit the live site: [pixelplayer.vercel.app](https://pixelplayer.vercel.app) *(or your deployed URL)*
+Visit the live site: [pixelplayer.netlify.app](https://pixelplayer.netlify.app) *(or your deployed URL)*
 
 ## ✨ Features
 

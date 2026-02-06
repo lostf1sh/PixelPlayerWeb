@@ -13,7 +13,7 @@
 
       <div class="grid md:grid-cols-2 gap-6">
         <!-- GitHub Issues -->
-        <a href="https://github.com/theovilardo/PixelPlayer/issues" target="_blank"
+        <a href="https://github.com/theovilardo/PixelPlayer/issues" target="_blank" rel="noopener noreferrer"
            class="group bg-surface0 rounded-2xl p-6 hover:bg-surface1/70 transition-all duration-300 hover:-translate-y-1 flex flex-col items-center text-center">
           <div class="w-16 h-16 rounded-2xl bg-overlay0/20 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
             <svg class="w-8 h-8 text-text group-hover:text-primary transition-colors" fill="currentColor" viewBox="0 0 24 24">
@@ -25,7 +25,7 @@
         </a>
 
         <!-- Telegram -->
-        <a href="https://t.me/thevelopersupport" target="_blank"
+        <a href="https://t.me/thevelopersupport" target="_blank" rel="noopener noreferrer"
            class="group bg-surface0 rounded-2xl p-6 hover:bg-surface1/70 transition-all duration-300 hover:-translate-y-1 flex flex-col items-center text-center">
           <div class="w-16 h-16 rounded-2xl bg-overlay0/20 flex items-center justify-center mb-4 group-hover:bg-blue/20 transition-colors">
             <svg class="w-8 h-8 text-text group-hover:text-blue transition-colors" fill="currentColor" viewBox="0 0 24 24">

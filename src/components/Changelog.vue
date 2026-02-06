@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { parseMarkdown } from '../utils/markdown'
 
 const releases = ref([])
@@ -148,6 +148,7 @@ onMounted(async () => {
                 <a 
                   :href="release.html_url" 
                   target="_blank"
+                  rel="noopener noreferrer"
                   class="inline-flex items-center gap-2 text-sm text-subtext0 hover:text-primary transition-colors"
                 >
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,6 +169,7 @@ onMounted(async () => {
           <a 
             href="https://github.com/theovilardo/PixelPlayer/releases" 
             target="_blank"
+            rel="noopener noreferrer"
             class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-surface0 hover:bg-surface1 text-text font-medium transition-colors"
           >
             View all releases

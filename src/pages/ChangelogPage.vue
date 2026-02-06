@@ -157,6 +157,7 @@ onMounted(async () => {
                       <a 
                         :href="release.html_url" 
                         target="_blank"
+                        rel="noopener noreferrer"
                         class="inline-flex items-center gap-2 text-sm text-subtext0 hover:text-primary transition-colors"
                       >
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -167,6 +168,7 @@ onMounted(async () => {
                       <a 
                         :href="release.html_url" 
                         target="_blank"
+                        rel="noopener noreferrer"
                         class="inline-flex items-center gap-2 text-sm text-subtext0 hover:text-primary transition-colors"
                       >
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">

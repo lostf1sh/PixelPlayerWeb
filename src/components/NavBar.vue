@@ -1,21 +1,98 @@
 <script setup>
-import { ref } from 'vue'
+import { nextTick, onUnmounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useTheme } from '../composables/useTheme'
+
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 const router = useRouter()
 const route = useRoute()
 const isOpen = ref(false)
 const showDownloadModal = ref(false)
+const downloadModalRef = ref(null)
+const lastFocusedElement = ref(null)
 const { isDark, toggleTheme } = useTheme()
 
+const getModalFocusableElements = () => {
+  if (!downloadModalRef.value) return []
+  return Array.from(downloadModalRef.value.querySelectorAll(FOCUSABLE_SELECTOR))
+}
+
+const focusFirstModalElement = () => {
+  const focusableElements = getModalFocusableElements()
+  if (focusableElements.length > 0) {
+    focusableElements[0].focus()
+    return
+  }
+
+  downloadModalRef.value?.focus()
+}
+
 const openDownloadModal = () => {
+  isOpen.value = false
+  lastFocusedElement.value = document.activeElement
   showDownloadModal.value = true
+
+  nextTick(() => {
+    focusFirstModalElement()
+  })
 }
 
 const closeDownloadModal = () => {
   showDownloadModal.value = false
 }
+
+const handleModalKeydown = (event) => {
+  if (!showDownloadModal.value) return
+
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    closeDownloadModal()
+    return
+  }
+
+  if (event.key !== 'Tab') return
+
+  const focusableElements = getModalFocusableElements()
+  if (focusableElements.length === 0) {
+    event.preventDefault()
+    downloadModalRef.value?.focus()
+    return
+  }
+
+  const firstElement = focusableElements[0]
+  const lastElement = focusableElements[focusableElements.length - 1]
+  const activeElement = document.activeElement
+
+  if (event.shiftKey) {
+    if (activeElement === firstElement || !downloadModalRef.value?.contains(activeElement)) {
+      event.preventDefault()
+      lastElement.focus()
+    }
+    return
+  }
+
+  if (activeElement === lastElement) {
+    event.preventDefault()
+    firstElement.focus()
+  }
+}
+
+watch(showDownloadModal, (isVisible) => {
+  if (isVisible) {
+    document.addEventListener('keydown', handleModalKeydown)
+    return
+  }
+
+  document.removeEventListener('keydown', handleModalKeydown)
+  if (lastFocusedElement.value instanceof HTMLElement) {
+    lastFocusedElement.value.focus()
+  }
+})
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleModalKeydown)
+})
 
 const goHome = () => {
   isOpen.value = false
@@ -32,7 +109,6 @@ const goHome = () => {
 const navigateTo = (sectionId) => {
   isOpen.value = false
   if (route.path !== '/') {
-    // Navigate to home first, then scroll
     router.push('/').then(() => {
       setTimeout(() => {
         const element = document.getElementById(sectionId)
@@ -143,10 +219,21 @@ const navigateTo = (sectionId) => {
         class="fixed inset-0 z-[100] flex items-center justify-center bg-crust/90 backdrop-blur-sm p-4"
         @click.self="closeDownloadModal"
       >
-        <div class="bg-surface0 rounded-2xl p-6 max-w-sm w-full border border-surface1 shadow-2xl">
+        <div
+          ref="downloadModalRef"
+          class="bg-surface0 rounded-2xl p-6 max-w-sm w-full border border-surface1 shadow-2xl"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="download-modal-title"
+          tabindex="-1"
+        >
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-xl font-bold text-text">Download PixelPlayer</h3>
-            <button @click="closeDownloadModal" class="p-1 rounded-lg hover:bg-surface1 transition-colors">
+            <h3 id="download-modal-title" class="text-xl font-bold text-text">Download PixelPlayer</h3>
+            <button
+              @click="closeDownloadModal"
+              class="p-1 rounded-lg hover:bg-surface1 transition-colors"
+              aria-label="Close download dialog"
+            >
               <svg class="w-5 h-5 text-subtext0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
@@ -160,6 +247,7 @@ const navigateTo = (sectionId) => {
             <a 
               href="https://github.com/theovilardo/PixelPlayer/releases" 
               target="_blank"
+              rel="noopener noreferrer"
               @click="closeDownloadModal"
               class="flex items-center gap-4 p-4 rounded-xl bg-surface1 hover:bg-surface2 transition-colors group"
             >
@@ -181,6 +269,7 @@ const navigateTo = (sectionId) => {
             <a 
               href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/theovilardo/PixelPlayer" 
               target="_blank"
+              rel="noopener noreferrer"
               @click="closeDownloadModal"
               class="flex items-center gap-4 p-4 rounded-xl bg-surface1 hover:bg-surface2 transition-colors group"
             >

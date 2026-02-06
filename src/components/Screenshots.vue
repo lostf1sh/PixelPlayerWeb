@@ -1,5 +1,7 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 const screenshots = [
   { src: new URL('@/assets/screenshots/home.jpg', import.meta.url).href, alt: 'Home Screen', title: 'Home' },
@@ -11,16 +13,42 @@ const screenshots = [
 
 const lightboxOpen = ref(false)
 const lightboxIndex = ref(0)
+const lightboxRef = ref(null)
+const lastFocusedElement = ref(null)
+
+const getLightboxFocusableElements = () => {
+  if (!lightboxRef.value) return []
+  return Array.from(lightboxRef.value.querySelectorAll(FOCUSABLE_SELECTOR))
+}
+
+const focusFirstLightboxElement = () => {
+  const focusableElements = getLightboxFocusableElements()
+  if (focusableElements.length > 0) {
+    focusableElements[0].focus()
+    return
+  }
+
+  lightboxRef.value?.focus()
+}
 
 const openLightbox = (index) => {
+  lastFocusedElement.value = document.activeElement
   lightboxIndex.value = index
   lightboxOpen.value = true
   document.body.style.overflow = 'hidden'
+
+  nextTick(() => {
+    focusFirstLightboxElement()
+  })
 }
 
 const closeLightbox = () => {
   lightboxOpen.value = false
   document.body.style.overflow = ''
+
+  if (lastFocusedElement.value instanceof HTMLElement) {
+    lastFocusedElement.value.focus()
+  }
 }
 
 const nextImage = () => {
@@ -31,12 +59,52 @@ const prevImage = () => {
   lightboxIndex.value = (lightboxIndex.value - 1 + screenshots.length) % screenshots.length
 }
 
-// Keyboard navigation
 const handleKeydown = (e) => {
   if (!lightboxOpen.value) return
-  if (e.key === 'Escape') closeLightbox()
-  if (e.key === 'ArrowRight') nextImage()
-  if (e.key === 'ArrowLeft') prevImage()
+
+  if (e.key === 'Escape') {
+    e.preventDefault()
+    closeLightbox()
+    return
+  }
+
+  if (e.key === 'ArrowRight') {
+    e.preventDefault()
+    nextImage()
+    return
+  }
+
+  if (e.key === 'ArrowLeft') {
+    e.preventDefault()
+    prevImage()
+    return
+  }
+
+  if (e.key !== 'Tab') return
+
+  const focusableElements = getLightboxFocusableElements()
+  if (focusableElements.length === 0) {
+    e.preventDefault()
+    lightboxRef.value?.focus()
+    return
+  }
+
+  const firstElement = focusableElements[0]
+  const lastElement = focusableElements[focusableElements.length - 1]
+  const activeElement = document.activeElement
+
+  if (e.shiftKey) {
+    if (activeElement === firstElement || !lightboxRef.value?.contains(activeElement)) {
+      e.preventDefault()
+      lastElement.focus()
+    }
+    return
+  }
+
+  if (activeElement === lastElement) {
+    e.preventDefault()
+    firstElement.focus()
+  }
 }
 
 onMounted(() => {
@@ -45,6 +113,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown)
+  document.body.style.overflow = ''
 })
 </script>
 
@@ -73,10 +142,11 @@ onUnmounted(() => {
 
       <!-- Screenshot Gallery - Clean static layout -->
       <div class="flex justify-center items-end gap-3 md:gap-5 lg:gap-6 flex-wrap">
-        <div 
+        <button
           v-for="(screenshot, index) in screenshots" 
           :key="index"
-          class="relative cursor-pointer"
+          type="button"
+          class="relative cursor-pointer bg-transparent border-0 p-0"
           :class="[
             index === 2 ? 'z-10' : 'z-0'
           ]"
@@ -84,6 +154,7 @@ onUnmounted(() => {
             transform: `rotate(${index === 0 ? -6 : index === 1 ? -3 : index === 2 ? 0 : index === 3 ? 3 : 6}deg) translateY(${index === 0 || index === 4 ? '0.5rem' : index === 1 || index === 3 ? '0.25rem' : '0'})`
           }"
           @click="openLightbox(index)"
+          :aria-label="`Open ${screenshot.title} screenshot`"
         >
           <div class="relative rounded-3xl bg-surface0 p-2 md:p-3 shadow-xl">
             <img 
@@ -92,7 +163,7 @@ onUnmounted(() => {
               class="w-28 md:w-36 lg:w-44 h-auto rounded-2xl"
             />
           </div>
-        </div>
+        </button>
       </div>
 
       <!-- Pagination dots -->
@@ -103,6 +174,7 @@ onUnmounted(() => {
           @click="openLightbox(index)"
           class="h-2 rounded-full transition-all duration-300"
           :class="index === lightboxIndex ? 'bg-primary w-6' : 'bg-surface1 w-2'"
+          :aria-label="`Open screenshot ${index + 1}`"
         ></button>
       </div>
     </div>
@@ -119,13 +191,19 @@ onUnmounted(() => {
       >
         <div 
           v-if="lightboxOpen" 
+          ref="lightboxRef"
           class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-crust/95 backdrop-blur-lg p-4"
           @click.self="closeLightbox"
+          role="dialog"
+          aria-modal="true"
+          :aria-label="`${screenshots[lightboxIndex].title} screenshot`"
+          tabindex="-1"
         >
           <!-- Close button -->
           <button 
             @click="closeLightbox"
             class="absolute top-4 right-4 p-2 rounded-full bg-surface0/80 backdrop-blur text-text hover:bg-surface1 transition-colors z-10"
+            aria-label="Close screenshot lightbox"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -152,6 +230,7 @@ onUnmounted(() => {
               <button 
                 @click="prevImage"
                 class="p-3 rounded-full bg-surface0 text-text hover:bg-surface1 transition-colors"
+                aria-label="Previous screenshot"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -160,18 +239,21 @@ onUnmounted(() => {
               
               <!-- Dots -->
               <div class="flex items-center gap-2">
-                <span 
-                  v-for="(_, i) in screenshots" 
-                  :key="i" 
-                  @click="lightboxIndex = i"
-                  class="w-2 h-2 rounded-full transition-all duration-300 cursor-pointer"
-                  :class="i === lightboxIndex ? 'bg-primary w-4' : 'bg-surface2 hover:bg-surface1'"
-                ></span>
-              </div>
+                  <button
+                    v-for="(_, i) in screenshots" 
+                    :key="i" 
+                    type="button"
+                    @click="lightboxIndex = i"
+                    class="w-2 h-2 rounded-full transition-all duration-300 cursor-pointer"
+                    :class="i === lightboxIndex ? 'bg-primary w-4' : 'bg-surface2 hover:bg-surface1'"
+                    :aria-label="`Show screenshot ${i + 1}`"
+                  ></button>
+                </div>
 
               <button 
                 @click="nextImage"
                 class="p-3 rounded-full bg-surface0 text-text hover:bg-surface1 transition-colors"
+                aria-label="Next screenshot"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
