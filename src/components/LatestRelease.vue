@@ -1,17 +1,18 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { fetchWithCache } from '../utils/cache'
 import { parseMarkdown } from '../utils/markdown'
 
 const router = useRouter()
+const route = useRoute()
 const latestRelease = ref(null)
 const isLoading = ref(true)
-const isExpanded = ref(true)
+const isExpanded = ref(false)
 
 const formatDate = (dateString) => {
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString(undefined, {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
@@ -36,7 +37,30 @@ const goToChangelog = () => {
   router.push('/changelog')
 }
 
+const syncExpandedFromQuery = (rawValue) => {
+  const queryValue = Array.isArray(rawValue) ? rawValue[0] : rawValue
+  isExpanded.value = queryValue === 'open'
+}
+
+const syncExpandedQuery = (expanded) => {
+  const nextQuery = { ...route.query }
+  if (expanded) {
+    nextQuery.latestRelease = 'open'
+  } else {
+    delete nextQuery.latestRelease
+  }
+
+  router.replace({ query: nextQuery })
+}
+
+const toggleExpanded = () => {
+  isExpanded.value = !isExpanded.value
+  syncExpandedQuery(isExpanded.value)
+}
+
 onMounted(async () => {
+  syncExpandedFromQuery(route.query.latestRelease)
+
   try {
     latestRelease.value = await fetchWithCache(
       'https://api.github.com/repos/theovilardo/PixelPlayer/releases/latest',
@@ -48,24 +72,30 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
+
+watch(
+  () => route.query.latestRelease,
+  (releaseQuery) => {
+    syncExpandedFromQuery(releaseQuery)
+  }
+)
 </script>
 
 <template>
-  <div class="py-16 md:py-20 bg-mantle" id="changelog">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Header -->
-      <div class="text-center mb-10">
-        <h2 class="text-base text-primary font-semibold tracking-wide uppercase">Latest Release</h2>
-        <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-text sm:text-4xl">
+  <section id="changelog" class="section-wrap">
+    <div class="section-container max-w-4xl">
+      <div class="section-header mb-10">
+        <h2 class="section-kicker border-primary/25 bg-primary/10 text-primary">Latest Release</h2>
+        <p class="section-title mt-4">
           What's New
         </p>
-        <p class="mt-4 text-lg text-subtext0 max-w-2xl mx-auto">
+        <p class="section-copy mt-4 max-w-2xl mx-auto">
           Check out the latest features and improvements.
         </p>
       </div>
 
       <!-- Loading State -->
-      <div v-if="isLoading" class="bg-surface0 rounded-2xl p-6 animate-pulse">
+      <div v-if="isLoading" class="card-surface animate-pulse p-6">
         <div class="flex items-center gap-4 mb-4">
           <div class="w-24 h-8 bg-surface1 rounded-full"></div>
           <div class="w-32 h-4 bg-surface1 rounded"></div>
@@ -79,13 +109,13 @@ onMounted(async () => {
       <!-- Latest Release Card - Accordion Style -->
       <div 
         v-else-if="latestRelease" 
-        class="bg-surface0 rounded-2xl overflow-hidden transition-all duration-300"
+        class="card-surface overflow-hidden transition-colors duration-300"
         :class="isExpanded ? 'ring-1 ring-primary/30' : ''"
       >
         <!-- Header - Always Visible, Clickable -->
         <button 
-          @click="isExpanded = !isExpanded"
-          class="w-full p-5 md:p-6 flex items-center justify-between gap-3 hover:bg-surface1/50 transition-colors text-left"
+          @click="toggleExpanded"
+          class="w-full p-5 md:p-6 flex items-center justify-between gap-3 hover:bg-surface1/40 transition-colors text-left"
         >
           <div class="flex flex-wrap items-center gap-2 md:gap-3">
             <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/15 text-primary text-base font-bold">
@@ -142,10 +172,10 @@ onMounted(async () => {
 
         <!-- Expandable Content -->
         <div 
-          class="overflow-hidden transition-all duration-300"
+          class="overflow-hidden transition-[max-height] duration-300"
           :class="isExpanded ? 'max-h-[3000px]' : 'max-h-0'"
         >
-          <div class="px-5 md:px-6 pb-5 md:pb-6 border-t border-surface1">
+          <div class="border-t border-surface1 px-5 pb-5 md:px-6 md:pb-6">
             <!-- Date on mobile -->
             <p class="text-sm text-subtext0 mt-3 sm:hidden">
               {{ formatDate(latestRelease.published_at) }} ({{ getRelativeTime(latestRelease.published_at) }})
@@ -186,7 +216,7 @@ onMounted(async () => {
       </div>
 
       <!-- Error State -->
-      <div v-else class="bg-surface0 rounded-2xl p-8 text-center">
+      <div v-else class="card-surface p-8 text-center">
         <p class="text-subtext0">Unable to load release information.</p>
         <button 
           @click="goToChangelog"
@@ -199,5 +229,5 @@ onMounted(async () => {
         </button>
       </div>
     </div>
-  </div>
+  </section>
 </template>

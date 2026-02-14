@@ -1,5 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
 
 const faqs = ref([
   {
@@ -29,30 +33,75 @@ const faqs = ref([
   }
 ])
 
+const getOpenIndexesFromQuery = (rawValue) => {
+  const tokens = Array.isArray(rawValue) ? rawValue : [rawValue]
+
+  return [...new Set(
+    tokens
+      .filter((token) => typeof token === 'string')
+      .flatMap((token) => token.split(','))
+      .map((token) => Number.parseInt(token, 10))
+      .filter((index) => Number.isInteger(index) && index >= 0 && index < faqs.value.length)
+  )]
+}
+
+const syncFaqStateFromQuery = (rawValue) => {
+  const openIndexes = new Set(getOpenIndexesFromQuery(rawValue))
+  faqs.value.forEach((faq, index) => {
+    faq.open = openIndexes.has(index)
+  })
+}
+
+const syncFaqQuery = () => {
+  const openIndexes = faqs.value
+    .map((faq, index) => (faq.open ? index : null))
+    .filter((index) => index !== null)
+
+  const nextQuery = { ...route.query }
+  if (openIndexes.length > 0) {
+    nextQuery.faq = openIndexes.join(',')
+  } else {
+    delete nextQuery.faq
+  }
+
+  router.replace({ query: nextQuery })
+}
+
 const toggleFaq = (index) => {
   faqs.value[index].open = !faqs.value[index].open
+  syncFaqQuery()
 }
+
+onMounted(() => {
+  syncFaqStateFromQuery(route.query.faq)
+})
+
+watch(
+  () => route.query.faq,
+  (faqQuery) => {
+    syncFaqStateFromQuery(faqQuery)
+  }
+)
 </script>
 
 <template>
-  <div class="py-20 bg-mantle relative overflow-hidden" id="faq">
+  <section id="faq" class="section-wrap relative overflow-hidden">
     <!-- Background decorations -->
     <div class="absolute top-0 right-1/4 w-72 h-72 bg-lavender/5 rounded-full blur-3xl"></div>
     <div class="absolute bottom-0 left-1/4 w-72 h-72 bg-mauve/5 rounded-full blur-3xl"></div>
 
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <!-- Section Header -->
-      <div class="text-center mb-12">
-        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-lavender/10 text-lavender text-sm font-medium mb-4">
+    <div class="section-container relative z-10 max-w-3xl">
+      <div class="section-header">
+        <span class="section-kicker border-lavender/30 bg-lavender/10 text-lavender">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
           FAQ
         </span>
-        <h2 class="text-4xl md:text-5xl font-bold text-text mb-4">
+        <h2 class="section-title">
           Frequently Asked Questions
         </h2>
-        <p class="text-xl text-subtext0">
+        <p class="section-copy">
           Got questions? We've got answers
         </p>
       </div>
@@ -61,7 +110,7 @@ const toggleFaq = (index) => {
         <div
           v-for="(faq, index) in faqs"
           :key="index"
-          class="group bg-surface0 rounded-3xl overflow-hidden transition-all duration-500 ease-out"
+          class="card-surface group overflow-hidden rounded-3xl transition-[box-shadow,background-color,border-color] duration-500 ease-out"
           :class="{
             'ring-2 ring-primary/50 shadow-lg shadow-primary/10': faq.open,
             'hover:bg-surface0/80': !faq.open
@@ -69,19 +118,19 @@ const toggleFaq = (index) => {
         >
           <button
             @click="toggleFaq(index)"
-            class="w-full px-8 py-6 text-left flex items-center justify-between gap-4 transition-colors duration-300"
+            class="w-full px-5 py-5 text-left flex items-start sm:items-center justify-between gap-3 sm:gap-4 transition-colors duration-300 sm:px-8 sm:py-6"
             :aria-expanded="faq.open"
             :aria-controls="`faq-answer-${index}`"
             :id="`faq-question-${index}`"
           >
-            <div class="flex items-center gap-5">
+            <div class="flex items-start sm:items-center gap-3 sm:gap-5">
               <!-- Animated indicator -->
               <div
-                class="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-500"
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center transition-colors transition-transform duration-500 shrink-0"
                 :class="faq.open ? 'bg-primary/20 text-primary rotate-0' : 'bg-surface1 text-subtext0 group-hover:bg-surface2'"
               >
                 <svg
-                  class="w-5 h-5 transition-transform duration-500"
+                  class="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-500"
                   :class="{ 'rotate-45': faq.open }"
                   fill="none"
                   stroke="currentColor"
@@ -90,10 +139,10 @@ const toggleFaq = (index) => {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
               </div>
-              <span class="font-semibold text-text text-xl">{{ faq.question }}</span>
+              <span class="font-semibold text-text text-lg leading-snug sm:text-xl">{{ faq.question }}</span>
             </div>
             <svg
-              class="w-5 h-5 text-subtext0 transition-all duration-500 flex-shrink-0"
+              class="w-5 h-5 mt-1 sm:mt-0 text-subtext0 transition-colors transition-transform duration-500 flex-shrink-0"
               :class="{ 'rotate-180 text-primary': faq.open }"
               fill="none"
               stroke="currentColor"
@@ -105,10 +154,10 @@ const toggleFaq = (index) => {
 
           <!-- Animated answer container -->
           <Transition
-            enter-active-class="transition-all duration-500 ease-out"
+            enter-active-class="transition-[max-height,opacity] duration-500 ease-out"
             enter-from-class="max-h-0 opacity-0"
             enter-to-class="max-h-48 opacity-100"
-            leave-active-class="transition-all duration-300 ease-in"
+            leave-active-class="transition-[max-height,opacity] duration-300 ease-in"
             leave-from-class="max-h-48 opacity-100"
             leave-to-class="max-h-0 opacity-0"
           >
@@ -123,7 +172,7 @@ const toggleFaq = (index) => {
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>

@@ -58,22 +58,22 @@ const requirements = [
 </script>
 
 <template>
-  <div class="py-20 bg-mantle relative overflow-hidden" id="requirements">
+  <section id="requirements" class="section-wrap relative overflow-hidden">
     <div class="absolute top-0 left-1/4 w-72 h-72 bg-green/5 rounded-full blur-3xl"></div>
     <div class="absolute bottom-0 right-1/4 w-72 h-72 bg-blue/5 rounded-full blur-3xl"></div>
 
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="text-center mb-12">
-        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green/10 text-green text-sm font-medium mb-4">
+    <div class="section-container relative z-10 max-w-5xl">
+      <div class="section-header">
+        <span class="section-kicker border-green/25 bg-green/10 text-green">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
           </svg>
           Requirements
         </span>
-        <h2 class="text-4xl md:text-5xl font-bold text-text mb-4">
+        <h2 class="section-title">
           System Requirements
         </h2>
-        <p class="text-xl text-subtext0 max-w-2xl mx-auto">
+        <p class="section-copy max-w-2xl mx-auto">
           Make sure your device meets these requirements for the best experience
         </p>
       </div>
@@ -82,7 +82,7 @@ const requirements = [
         <div 
           v-for="(req, index) in requirements" 
           :key="index"
-          class="bg-surface0 rounded-2xl p-5 md:p-6 border border-surface1 hover:border-primary/30 transition-all duration-300"
+          class="card-surface p-5 md:p-6 hover:border-primary/30 transition-colors duration-300"
         >
           <div
             class="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
@@ -113,5 +113,5 @@ const requirements = [
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>

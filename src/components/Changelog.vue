@@ -8,7 +8,7 @@ const expandedRelease = ref(null)
 
 const formatDate = (dateString) => {
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString(undefined, {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
@@ -119,7 +119,7 @@ onMounted(async () => {
 
               <!-- Release Notes (Truncated) -->
               <div 
-                class="text-subtext0 text-sm leading-relaxed overflow-hidden transition-all duration-300"
+                class="text-subtext0 text-sm leading-relaxed overflow-hidden transition-[max-height] duration-300"
                 :class="expandedRelease === index ? 'max-h-[2000px]' : 'max-h-24'"
               >
                 <div v-html="parseMarkdown(release.body || 'No release notes available.')"></div>

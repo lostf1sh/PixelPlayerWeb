@@ -69,8 +69,68 @@
 }
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
     @apply bg-base text-text font-sans antialiased;
+    background-image:
+      radial-gradient(circle at 10% 10%, rgb(var(--ctp-primary) / 0.08) 0%, transparent 42%),
+      radial-gradient(circle at 90% 20%, rgb(var(--ctp-blue) / 0.08) 0%, transparent 38%),
+      radial-gradient(circle at 50% 95%, rgb(var(--ctp-pink) / 0.08) 0%, transparent 35%);
+    background-attachment: fixed;
+  }
+
+  ::selection {
+    color: rgb(var(--ctp-crust));
+    background: rgb(var(--ctp-primary));
+  }
+}
+
+@layer components {
+  .app-shell {
+    @apply relative min-h-screen overflow-x-hidden bg-base text-text;
+  }
+
+  .section-wrap {
+    @apply relative py-16 md:py-24;
+  }
+
+  .section-container {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-header {
+    @apply mx-auto mb-12 max-w-3xl text-center md:mb-14;
+  }
+
+  .section-kicker {
+    @apply inline-flex items-center gap-2 rounded-full border border-surface1 bg-surface0/70 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-subtext0;
+  }
+
+  .section-title {
+    @apply mt-4 text-3xl font-bold tracking-tight text-text sm:text-4xl lg:text-5xl;
+  }
+
+  .section-copy {
+    @apply mt-4 text-base text-subtext0 sm:text-lg;
+  }
+
+  .card-surface {
+    @apply rounded-2xl border border-surface1/70 bg-mantle/80 shadow-[0_16px_45px_-28px_rgba(0,0,0,0.45)] backdrop-blur-sm;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-crust transition-colors transition-transform duration-300 hover:-translate-y-0.5 hover:bg-primary/90;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-surface1 bg-surface0/70 px-5 py-3 text-sm font-semibold text-text transition-colors hover:bg-surface1/80;
+  }
+
+  .orb {
+    @apply pointer-events-none absolute rounded-full blur-3xl;
   }
 }
 

@@ -92,12 +92,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="py-12 bg-mantle border-y border-surface0/30">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+  <section class="section-wrap py-12 md:py-14">
+    <div class="section-container">
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
         <!-- Stars -->
-        <div class="group relative bg-surface0/50 rounded-2xl p-5 text-center hover:bg-surface0 transition-all duration-300 hover:-translate-y-1">
-          <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-yellow/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="card-surface group relative p-5 text-center transition-colors transition-transform duration-300 hover:-translate-y-1 hover:bg-surface0/65">
+          <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-yellow/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
           <div class="relative">
             <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-yellow/10 flex items-center justify-center">
               <svg class="w-6 h-6 text-yellow" fill="currentColor" viewBox="0 0 24 24">
@@ -113,8 +113,8 @@ onMounted(async () => {
         </div>
 
         <!-- Forks -->
-        <div class="group relative bg-surface0/50 rounded-2xl p-5 text-center hover:bg-surface0 transition-all duration-300 hover:-translate-y-1">
-          <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="card-surface group relative p-5 text-center transition-colors transition-transform duration-300 hover:-translate-y-1 hover:bg-surface0/65">
+          <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
           <div class="relative">
             <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-blue/10 flex items-center justify-center">
               <svg class="w-6 h-6 text-blue" fill="currentColor" viewBox="0 0 24 24">
@@ -130,8 +130,8 @@ onMounted(async () => {
         </div>
 
         <!-- Downloads -->
-        <div class="group relative bg-surface0/50 rounded-2xl p-5 text-center hover:bg-surface0 transition-all duration-300 hover:-translate-y-1">
-          <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-green/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="card-surface group relative p-5 text-center transition-colors transition-transform duration-300 hover:-translate-y-1 hover:bg-surface0/65">
+          <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-green/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
           <div class="relative">
             <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-green/10 flex items-center justify-center">
               <svg class="w-6 h-6 text-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -147,8 +147,8 @@ onMounted(async () => {
         </div>
 
         <!-- Contributors -->
-        <div class="group relative bg-surface0/50 rounded-2xl p-5 text-center hover:bg-surface0 transition-all duration-300 hover:-translate-y-1">
-          <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-pink/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <div class="card-surface group relative p-5 text-center transition-colors transition-transform duration-300 hover:-translate-y-1 hover:bg-surface0/65">
+          <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-pink/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100"></div>
           <div class="relative">
             <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-pink/10 flex items-center justify-center">
               <svg class="w-6 h-6 text-pink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,5 +164,5 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>

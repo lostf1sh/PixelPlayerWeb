@@ -1,17 +1,20 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import NavBar from '../components/NavBar.vue'
 import Footer from '../components/Footer.vue'
 import { fetchWithCache } from '../utils/cache'
 import { parseMarkdown } from '../utils/markdown'
 
+const route = useRoute()
+const router = useRouter()
 const releases = ref([])
 const isLoading = ref(true)
 const expandedRelease = ref(null)
 
 const formatDate = (dateString) => {
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString(undefined, {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
@@ -32,44 +35,76 @@ const getRelativeTime = (dateString) => {
   return `${Math.floor(diffDays / 365)} years ago`
 }
 
-const toggleExpand = (index) => {
-  expandedRelease.value = expandedRelease.value === index ? null : index
+const syncExpandedFromQuery = (rawValue) => {
+  const queryValue = Array.isArray(rawValue) ? rawValue[0] : rawValue
+  expandedRelease.value = typeof queryValue === 'string' ? queryValue : null
+}
+
+const syncExpandedQuery = (tagName) => {
+  const nextQuery = { ...route.query }
+  if (tagName) {
+    nextQuery.release = tagName
+  } else {
+    delete nextQuery.release
+  }
+
+  router.replace({ query: nextQuery })
+}
+
+const toggleExpand = (release) => {
+  const nextValue = expandedRelease.value === release.tag_name ? null : release.tag_name
+  expandedRelease.value = nextValue
+  syncExpandedQuery(nextValue)
 }
 
 onMounted(async () => {
+  syncExpandedFromQuery(route.query.release)
+
   try {
     releases.value = await fetchWithCache(
       'https://api.github.com/repos/theovilardo/PixelPlayer/releases?per_page=20',
       'all_releases'
     )
+
+    if (expandedRelease.value && !releases.value.some((release) => release.tag_name === expandedRelease.value)) {
+      expandedRelease.value = null
+      syncExpandedQuery(null)
+    }
   } catch (error) {
     console.error('Failed to fetch releases:', error)
   } finally {
     isLoading.value = false
   }
 })
+
+watch(
+  () => route.query.release,
+  (releaseQuery) => {
+    syncExpandedFromQuery(releaseQuery)
+  }
+)
 </script>
 
 <template>
-  <div class="min-h-screen bg-base text-text selection:bg-primary selection:text-base">
+  <div class="app-shell">
     <NavBar />
     
-    <main class="pt-20">
+    <main class="pt-24">
       <!-- Header -->
-      <div class="bg-mantle py-16 md:py-20">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 class="text-4xl md:text-5xl font-bold text-text mb-4">Changelog</h1>
-          <p class="text-lg text-subtext0 max-w-2xl mx-auto">
+      <div class="section-wrap pb-12 pt-8">
+        <div class="section-container max-w-4xl text-center">
+          <h1 class="section-title mt-0">Changelog</h1>
+          <p class="section-copy max-w-2xl mx-auto">
             Complete version history of PixelPlayer. See what's new in each release.
           </p>
         </div>
       </div>
 
       <!-- Releases List -->
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <div class="section-container max-w-4xl pb-16">
         <!-- Loading State -->
         <div v-if="isLoading" class="space-y-4">
-          <div v-for="i in 5" :key="i" class="bg-surface0 rounded-2xl p-6 animate-pulse">
+          <div v-for="i in 5" :key="i" class="card-surface p-6 animate-pulse">
             <div class="flex items-center gap-4 mb-4">
               <div class="w-20 h-8 bg-surface1 rounded-full"></div>
               <div class="w-32 h-4 bg-surface1 rounded"></div>
@@ -101,12 +136,12 @@ onMounted(async () => {
 
               <!-- Release Card - Accordion Style -->
               <div 
-                class="bg-surface0 rounded-2xl overflow-hidden transition-all duration-300"
-                :class="expandedRelease === index ? 'ring-1 ring-primary/30' : ''"
+                class="card-surface overflow-hidden transition-colors duration-300"
+                :class="expandedRelease === release.tag_name ? 'ring-1 ring-primary/30' : ''"
               >
                 <!-- Header - Always Visible, Clickable -->
                 <button 
-                  @click="toggleExpand(index)"
+                  @click="toggleExpand(release)"
                   class="w-full p-4 md:p-5 flex items-center justify-between gap-3 hover:bg-surface1/50 transition-colors text-left"
                 >
                   <div class="flex flex-wrap items-center gap-2 md:gap-3">
@@ -126,7 +161,7 @@ onMounted(async () => {
                     </span>
                     <svg 
                       class="w-5 h-5 text-subtext0 transition-transform duration-300" 
-                      :class="expandedRelease === index ? 'rotate-180' : ''"
+                      :class="expandedRelease === release.tag_name ? 'rotate-180' : ''"
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"
@@ -138,8 +173,8 @@ onMounted(async () => {
 
                 <!-- Expandable Content -->
                 <div 
-                  class="overflow-hidden transition-all duration-300"
-                  :class="expandedRelease === index ? 'max-h-[5000px]' : 'max-h-0'"
+                  class="overflow-hidden transition-[max-height] duration-300"
+                  :class="expandedRelease === release.tag_name ? 'max-h-[5000px]' : 'max-h-0'"
                 >
                   <div class="px-4 md:px-5 pb-4 md:pb-5 border-t border-surface1">
                     <!-- Date on mobile -->
@@ -188,7 +223,7 @@ onMounted(async () => {
         <div class="mt-12 text-center">
           <router-link 
             to="/"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-surface0 hover:bg-surface1 text-text font-medium transition-colors"
+            class="btn-secondary"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>

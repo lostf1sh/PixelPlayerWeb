@@ -118,29 +118,27 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="py-20 bg-base relative overflow-hidden" id="screenshots">
+  <section id="screenshots" class="section-wrap relative overflow-hidden">
     <!-- Subtle background decorations -->
     <div class="absolute top-1/2 left-0 w-72 h-72 bg-pink/3 rounded-full blur-3xl -translate-y-1/2"></div>
     <div class="absolute top-1/2 right-0 w-72 h-72 bg-blue/3 rounded-full blur-3xl -translate-y-1/2"></div>
     
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <!-- Section Header -->
-      <div class="text-center mb-12">
-        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pink/10 text-pink text-sm font-medium mb-4">
+    <div class="section-container relative z-10">
+      <div class="section-header">
+        <span class="section-kicker bg-pink/10 text-pink border-pink/25">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
           </svg>
           Screenshots
         </span>
-        <h2 class="text-4xl md:text-5xl font-bold text-text mb-4">
+        <h2 class="section-title">
           See it in action
         </h2>
-        <p class="text-xl text-subtext0 max-w-2xl mx-auto">
+        <p class="section-copy max-w-2xl mx-auto">
           A beautiful interface designed with care for the best experience
         </p>
       </div>
 
-      <!-- Screenshot Gallery - Clean static layout -->
       <div class="flex justify-center items-end gap-3 md:gap-5 lg:gap-6 flex-wrap">
         <button
           v-for="(screenshot, index) in screenshots" 
@@ -156,23 +154,26 @@ onUnmounted(() => {
           @click="openLightbox(index)"
           :aria-label="`Open ${screenshot.title} screenshot`"
         >
-          <div class="relative rounded-3xl bg-surface0 p-2 md:p-3 shadow-xl">
+          <div class="card-surface relative rounded-3xl bg-surface0/75 p-2 md:p-3">
             <img 
               :src="screenshot.src" 
               :alt="screenshot.alt" 
               class="w-28 md:w-36 lg:w-44 h-auto rounded-2xl"
+              width="465"
+              height="1024"
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </button>
       </div>
 
-      <!-- Pagination dots -->
       <div class="flex justify-center gap-2 mt-10">
         <button 
           v-for="(_, index) in screenshots" 
           :key="index"
           @click="openLightbox(index)"
-          class="h-2 rounded-full transition-all duration-300"
+          class="h-2 rounded-full transition-[width,background-color] duration-300"
           :class="index === lightboxIndex ? 'bg-primary w-6' : 'bg-surface1 w-2'"
           :aria-label="`Open screenshot ${index + 1}`"
         ></button>
@@ -192,7 +193,7 @@ onUnmounted(() => {
         <div 
           v-if="lightboxOpen" 
           ref="lightboxRef"
-          class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-crust/95 backdrop-blur-lg p-4"
+          class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-crust/95 backdrop-blur-lg p-4 overscroll-contain"
           @click.self="closeLightbox"
           role="dialog"
           aria-modal="true"
@@ -202,7 +203,7 @@ onUnmounted(() => {
           <!-- Close button -->
           <button 
             @click="closeLightbox"
-            class="absolute top-4 right-4 p-2 rounded-full bg-surface0/80 backdrop-blur text-text hover:bg-surface1 transition-colors z-10"
+            class="absolute top-4 right-4 p-2 rounded-full border border-surface1/70 bg-surface0/80 backdrop-blur text-text transition-colors hover:bg-surface1 z-10"
             aria-label="Close screenshot lightbox"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -212,11 +213,15 @@ onUnmounted(() => {
 
           <!-- Main image container -->
           <div class="relative w-48 sm:w-56 md:w-64 lg:w-72 max-h-[70vh]">
-            <div class="rounded-2xl bg-surface0 p-2 shadow-2xl">
+            <div class="card-surface rounded-2xl bg-surface0/90 p-2">
               <img 
                 :src="screenshots[lightboxIndex].src" 
                 :alt="screenshots[lightboxIndex].alt" 
                 class="w-full h-auto rounded-xl"
+                width="465"
+                height="1024"
+                loading="eager"
+                decoding="async"
               />
             </div>
           </div>
@@ -229,7 +234,7 @@ onUnmounted(() => {
             <div class="flex items-center gap-4">
               <button 
                 @click="prevImage"
-                class="p-3 rounded-full bg-surface0 text-text hover:bg-surface1 transition-colors"
+                class="rounded-full border border-surface1/70 bg-surface0 p-3 text-text transition-colors hover:bg-surface1"
                 aria-label="Previous screenshot"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -244,7 +249,7 @@ onUnmounted(() => {
                     :key="i" 
                     type="button"
                     @click="lightboxIndex = i"
-                    class="w-2 h-2 rounded-full transition-all duration-300 cursor-pointer"
+                    class="w-2 h-2 rounded-full transition-[width,background-color] duration-300 cursor-pointer"
                     :class="i === lightboxIndex ? 'bg-primary w-4' : 'bg-surface2 hover:bg-surface1'"
                     :aria-label="`Show screenshot ${i + 1}`"
                   ></button>
@@ -252,7 +257,7 @@ onUnmounted(() => {
 
               <button 
                 @click="nextImage"
-                class="p-3 rounded-full bg-surface0 text-text hover:bg-surface1 transition-colors"
+                class="rounded-full border border-surface1/70 bg-surface0 p-3 text-text transition-colors hover:bg-surface1"
                 aria-label="Next screenshot"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -279,5 +284,5 @@ onUnmounted(() => {
         </div>
       </Transition>
     </Teleport>
-  </div>
+  </section>
 </template>
